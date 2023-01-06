@@ -6,6 +6,8 @@ from PIL import Image, UnidentifiedImageError
 from PIL.ExifTags import TAGS
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PHOTOORG_JSON = "photoorg.json"
+
 NAME = "NAME"
 EXIF = "EXIF"
 ITEMS = "ITEMS"
@@ -82,6 +84,11 @@ def scanDir(root, base, index, config):
 		for entry in entries:
 			p = os.path.join(root, entry)
 			if os.path.isfile(p):
+			
+				head, file_name = os.path.split(p)
+				if (file_name == PHOTOORG_JSON):
+					continue
+				
 				id = os.path.relpath(p, base)
 				if (ITEMS in index and id in index[ITEMS]):
 					# copy from existing index
@@ -378,7 +385,7 @@ if __name__ == "__main__":
 			if ("-update" in flags):
 				config["update"] = True
 		
-		index_file = os.path.join(dir, "photoorg.json")
+		index_file = os.path.join(dir, PHOTOORG_JSON)
 				
 		r = {}
 		if ("update" in config):
@@ -401,30 +408,33 @@ if __name__ == "__main__":
 		index1 = None
 		index2 = None
 		
-		index_file1 = open(os.path.join(dir1, "photoorg.json"), "r")
+		index_file1 = open(os.path.join(dir1, PHOTOORG_JSON), "r")
 		index1 = json.load(index_file1)
 
-		index_file2 = open(os.path.join(dir2, "photoorg.json"), "r")
+		index_file2 = open(os.path.join(dir2, PHOTOORG_JSON), "r")
 		index2 = json.load(index_file2)
 		
 		(missing_in_index1, missing_in_index2, different_hash) = diff(index1, index2)
 		
 		###
-		print("Missing in %s:" % index1[NAME])
-		for item in missing_in_index1:
-			print(item[NAME])
+		if (len(missing_in_index1) > 0):
+			print("Missing in %s:" % index1[NAME])
+			for item in missing_in_index1:
+				print(item[NAME])
 
-		print("Missing in %s:" % index2[NAME])
-		for item in missing_in_index2:
-			print(item[NAME])
+		if (len(missing_in_index2) > 0):
+			print("Missing in %s:" % index2[NAME])
+			for item in missing_in_index2:
+				print(item[NAME])
 			
-		print("Mismatched hash:")
-		for (item1, item2) in different_hash:
-			print("[%s] vs [%s]" % (item1[NAME], item2[NAME]))
-			quickFixOldFormat(item1)	
-			quickFixOldFormat(item2)
-			diffImages(item1[FILENAME], item2[FILENAME])
-			print("")
+		if (len(different_hash) > 0):
+			print("Mismatched hash:")
+			for (item1, item2) in different_hash:
+				print("[%s] vs [%s]" % (item1[NAME], item2[NAME]))
+				quickFixOldFormat(item1)	
+				quickFixOldFormat(item2)
+				diffImages(item1[FILENAME], item2[FILENAME])
+				print("")
 	
 	elif (op == "diff-images"):
 		file1 = sys.argv[2]
@@ -439,10 +449,10 @@ if __name__ == "__main__":
 		index1 = None
 		index2 = None
 		
-		index_file1 = open(os.path.join(dir1, "photoorg.json"), "r")
+		index_file1 = open(os.path.join(dir1, PHOTOORG_JSON), "r")
 		index1 = json.load(index_file1)
 
-		index_file2 = open(os.path.join(dir2, "photoorg.json"), "r")
+		index_file2 = open(os.path.join(dir2, PHOTOORG_JSON), "r")
 		index2 = json.load(index_file2)
 
 		sync(index1, index2)
@@ -454,10 +464,10 @@ if __name__ == "__main__":
 		index1 = None
 		index2 = None
 
-		index_file1 = open(os.path.join(dir1, "photoorg.json"), "r")
+		index_file1 = open(os.path.join(dir1, PHOTOORG_JSON), "r")
 		index1 = json.load(index_file1)
 
-		index_file2 = open(os.path.join(dir2, "photoorg.json"), "r")
+		index_file2 = open(os.path.join(dir2, PHOTOORG_JSON), "r")
 		index2 = json.load(index_file2)
 		
 		find(index1, index2)
@@ -467,7 +477,7 @@ if __name__ == "__main__":
 		
 		index1 = None
 
-		index_file1 = open(os.path.join(dir1, "photoorg.json"), "r")
+		index_file1 = open(os.path.join(dir1, PHOTOORG_JSON), "r")
 		index1 = json.load(index_file1)
 		
 		collisions = indexHashes(index1)[1]
