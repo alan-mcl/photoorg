@@ -1,0 +1,2 @@
+https://towardsdatascience.com/detection-of-duplicate-images-using-image-hash-functions-4d9c53f04a75
+https://github.com/ftarlao/check-media-integrity

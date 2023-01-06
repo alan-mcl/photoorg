@@ -1,0 +1,11 @@
+https://exiftool.org/TagNames/EXIF.html
+
+EXIF orientation
+1 Top, left side (Horizontal / normal)
+2 Top, right side (Mirror horizontal)
+3 Bottom, right side (Rotate 180)
+4 Bottom, left side (Mirror vertical)
+5 Left side, top (Mirror horizontal and rotate 270 CW)
+6 Right side, top (Rotate 90 CW)
+7 Right side, bottom (Mirror horizontal and rotate 90 CW)
+8 Left side, bottom (Rotate 270 CW)
