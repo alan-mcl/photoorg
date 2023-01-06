@@ -5,6 +5,8 @@ import hashlib
 from PIL import Image, UnidentifiedImageError
 from PIL.ExifTags import TAGS
 
+__license__ = "GPL3"
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 PHOTOORG_JSON = "photoorg.json"
 
