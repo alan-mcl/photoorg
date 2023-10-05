@@ -295,7 +295,7 @@ def indexHashes(root):
 # find each image in index1 in index2, based on hash
 def find(index1, index2):
 	
-	if (index1[ITEMS] is None):
+	if (ITEMS not in index1 or index1[ITEMS] is None):
 		print("no images to find in %s" % index1[NAME]);
 		return
 	
@@ -305,7 +305,10 @@ def find(index1, index2):
 	
 	for k in index1[ITEMS]:
 		item = index1[ITEMS][k]
-		if (item[HASH] is not None):
+		if (ITEMS in item and item[ITEMS] is not None):
+			# this is a subfolder, process recursively
+			find(item, index2)
+		elif (HASH in item and item[HASH] is not None):
 			if (item[HASH] in map):
 				print("found [%s] at [%s]" % (item[FILENAME], map[item[HASH]][FILENAME]))
 			else:

@@ -35,7 +35,7 @@ Detects duplicate hashes
 
 `photoorg.py dedupe f:\backup\photos`
 
-### Find search one index for the images in another index
+### Search one index for the images in another index
 
 `photoorg.py find h:\weird_random_photos f:\backup\photos`
 
